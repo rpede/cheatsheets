@@ -1,7 +1,7 @@
-# Linux (CLI)
+# Linux (CLI) - cheat sheet
 
 <!--toc:start-->
-- [Linux (CLI)](#linux-cli)
+- [Linux (CLI) - cheat sheet](#linux-cli-cheat-sheet)
   - [Files and folders](#files-and-folders)
   - [Scripting](#scripting)
   - [System](#system)
