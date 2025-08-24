@@ -1,5 +1,14 @@
 # Linux (CLI)
 
+<!--toc:start-->
+- [Linux (CLI)](#linux-cli)
+  - [Files and folders](#files-and-folders)
+  - [Scripting](#scripting)
+  - [System](#system)
+  - [Managing software on Ubuntu (or Debian)](#managing-software-on-ubuntu-or-debian)
+  - [Manage services](#manage-services)
+<!--toc:end-->
+
 ## Files and folders
 
 The file system key in Linux.
