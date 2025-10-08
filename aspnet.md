@@ -3,17 +3,14 @@
 <!--toc:start-->
 - [ASP.NET - cheat sheet](#aspnet-cheat-sheet)
   - [Project setup](#project-setup)
-    - [Server (backend)](#server-backend)
-    - [Database setup](#database-setup)
-    - [Useful commands](#useful-commands)
-    - [Identity](#identity)
-    - [Scalar](#scalar)
+  - [Database setup](#database-setup)
+  - [Useful commands](#useful-commands)
+  - [Identity](#identity)
+  - [Scalar](#scalar)
   - [Resources](#resources)
 <!--toc:end-->
 
 ## Project setup
-
-### Server (backend)
 
 In .NET you create a solution (.sln file) which
 references one o more projects (.csproj files).
@@ -59,7 +56,7 @@ dotnet add server/Api reference server/DataAccess
 dotnet add server/Tests reference server/Api
 ```
 
-### Database setup
+## Database setup
 
 Create `server/DataAccess/AppDbContext.cs` with:
 
@@ -119,7 +116,7 @@ Then run:
 docker compose up -d
 ```
 
-### Useful commands
+## Useful commands
 
 ```sh
 # Run the project
@@ -135,7 +132,7 @@ dotnet build
 dotnet test
 ```
 
-### Identity
+## Identity
 
 ASP.NET Core Identity or just Identity for short, can be used to quickly add
 user registration, authentication to a project.
@@ -179,7 +176,7 @@ Then after `var app = builder.Build();` add:
 app.MapIdentityApi<IdentityUser>();
 ```
 
-### Scalar
+## Scalar
 
 Scalar gives a nice UI for documentation and manual testing base on OpenAPI.
 
