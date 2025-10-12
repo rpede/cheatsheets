@@ -44,10 +44,10 @@ dotnet add server/DataAccess package Microsoft.EntityFrameworkCore.Design
 # PostgreSQL support
 dotnet add server/DataAccess package Npgsql.EntityFrameworkCore.PostgreSQL
 
-# Make sure TUnit project template is installed
-dotnet new install TUnit.Templates
+# Make sure xUnit.net project template is installed
+dotnet new install xunit.v3.templates
 # Create Tests project
-dotnet new TUnit -o server/Tests
+dotnet new xunit3 -f net9.0 -o server/Tests
 # Add it to solution
 dotnet sln *.sln add server/Tests
 
@@ -179,6 +179,7 @@ app.MapIdentityApi<IdentityUser>();
 ## Scalar
 
 Scalar gives a nice UI for documentation and manual testing base on OpenAPI.
+It is an alternative to Swagger UI.
 
 ```sh
 dotnet add server/Api package Scalar.AspNetCore
@@ -205,7 +206,7 @@ if (app.Environment.IsDevelopment())
 
 ## Resources
 
-- [Installing TUnit](https://tunit.dev/docs/getting-started/installation)
+- [Getting Started with xUnit.net v3](https://xunit.net/docs/getting-started/v3/getting-started)
 - [Getting Started with EF Core](https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli)
 - [How to use Identity to secure a Web API backend for SPAs](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization?view=aspnetcore-9.0)
 - [Scalar - .NET ASP.NET Core](https://guides.scalar.com/scalar/scalar-api-references/integrations/net-aspnet-core)
