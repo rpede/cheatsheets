@@ -371,4 +371,4 @@ npx swagger-typescript-api generate -p http://localhost:5000/openapi/v1.json -o 
 EOF
 
 echo -e "${G}Success!${N}"
-echo -e "Open ${LINK}$PWD/$NAME\a$PWD/$NAME${LINK}\a in your editor and see REAME.md"
+echo -e "Open ${LINK}$PWD\a$PWD${LINK}\a in your editor and see REAME.md"
