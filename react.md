@@ -97,3 +97,13 @@ export default defineConfig({
   },
 });
 ```
+
+Replace `5153` with the actual port of your backend.
+
+## Scaffold client
+
+```sh
+npx swagger-typescript-api generate -p https://localhost:5153/swagger/v1/swagger.json -o ./ -n generated-client.ts
+```
+
+Replace `5153` with the actual port of your backend.
