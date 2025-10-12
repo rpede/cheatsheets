@@ -90,7 +90,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5153",
+        target: "http://localhost:5000",
         changeOrigin: true,
       },
     },
@@ -103,7 +103,7 @@ Replace `5153` with the actual port of your backend.
 ## Scaffold client
 
 ```sh
-npx swagger-typescript-api generate -p https://localhost:5153/swagger/v1/swagger.json -o ./ -n generated-client.ts
+npx swagger-typescript-api generate -p http://localhost:5000/swagger/v1/swagger.json -o ./ -n generated-client.ts
 ```
 
-Replace `5153` with the actual port of your backend.
+Replace `5000` with the actual port of your backend.

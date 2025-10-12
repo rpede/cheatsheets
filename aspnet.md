@@ -56,6 +56,41 @@ dotnet add server/Api reference server/DataAccess
 dotnet add server/Tests reference server/Api
 ```
 
+The `dotnet new aebapi` commands sets random ports which can be annoying since
+other parts of project setup depends on the port.
+It can be fixed by changing `server/Api/Properties/launchSettings.json` to:
+
+```json
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+```
+
+Note: port 5000 for HTTP and 5001 for HTTPS.
+
+Remove `server/Api/WeatherForecast.cs` and
+`server/Api/Controllers/WeatherForecastController.cs` files.
+
 ## Database setup
 
 Create `server/DataAccess/AppDbContext.cs` with:
