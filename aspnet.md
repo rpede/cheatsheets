@@ -10,6 +10,16 @@
   - [Resources](#resources)
 <!--toc:end-->
 
+## Prerequisites
+
+Assumes you got .NET SDK 9 and ASP.NET runtime 9 installed.
+
+- [Windows](https://learn.microsoft.com/en-us/dotnet/core/install/windows)
+- [macOS](https://learn.microsoft.com/en-us/dotnet/core/install/macos)
+- [Ubuntu](https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-install?tabs=dotnet9)
+- [Fedora](https://learn.microsoft.com/en-us/dotnet/core/install/linux-fedora?tabs=dotnet9)
+- [Arch Linux](https://wiki.archlinux.org/title/.NET)
+
 ## Project setup
 
 In .NET you create a solution (.sln file) which
