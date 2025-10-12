@@ -161,22 +161,6 @@ Then run:
 docker compose up -d
 ```
 
-## Useful commands
-
-```sh
-# Run the project
-dotnet run --project server/Api
-
-# Run, but reload on code change
-dotnet run --project server/Api --watch
-
-# Build/compile
-dotnet build
-
-# Run tests
-dotnet test
-```
-
 ## Identity
 
 ASP.NET Core Identity or just Identity for short, can be used to quickly add
@@ -277,6 +261,22 @@ USER $APP_UID
 EXPOSE 8080
 # 10. Start Api
 CMD ["dotnet", "Api.dll"]
+```
+
+## Useful commands
+
+```sh
+# Run the project
+dotnet run --project server/Api
+
+# Run, but reload on code change
+dotnet run --project server/Api --watch
+
+# Build/compile
+dotnet build
+
+# Run tests
+dotnet test
 ```
 
 ## Resources
