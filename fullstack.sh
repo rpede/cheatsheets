@@ -8,40 +8,39 @@ if [ $# -eq 0 ]; then
 fi
 
 NAME=$1
-B='\033[0:34m'
-G='\033[0:32m'
-N='\033[0m'
+B='\e[34m'
+G='\e[32m'
+W='\e[33;5m'
+N='\e[0m'
+LINK='\e]8;;'
 
-echo "Create project folder"
+echo -e "${B}Create ${NAME} folder for project${N}"
 mkdir $NAME
 # Navigate into the folder
 cd $NAME
 
-echo "Initialize git repository"
+echo -e "${B}Initialize git repository${N}"
 # Turn the folder into a local GIT repository
-git init
+git init > /dev/null
 # Create a .gitignore file, telling git to ignore certain files
-dotnet new gitignore
+dotnet new gitignore > /dev/null
 
-echo "Creating server"
-echo "Create .NET solution and projects"
+echo -e "${B}Creating server (EF, Identity, xUnit, Scalar)...${N}"
 # Create a solution file
 dotnet new sln > /dev/null
 
-echo "Creating Api project"
+# Creating Api project
 # Create a ASP.NET Web API project
 dotnet new webapi -controllers -o server/Api > /dev/null
 # Add it to solution
 dotnet sln add server/Api > /dev/null
 dotnet add server/Api package Scalar.AspNetCore > /dev/null
 
-echo "Creating DataAccess project"
+# Creating DataAccess project using Entity Framework
 # Create DataAccess project
 dotnet new classlib -o server/DataAccess > /dev/null
 # Add it to solution
 dotnet sln *.sln add server/DataAccess > /dev/null
-
-echo "Configuring Entity Framework"
 # Make sure you have Entity Framework CLI
 dotnet tool install --global dotnet-ef > /dev/null
 # Entity Framework dependency
@@ -52,7 +51,7 @@ dotnet add server/DataAccess package Npgsql.EntityFrameworkCore.PostgreSQL > /de
 dotnet add server/DataAccess package Microsoft.AspNetCore.Identity.EntityFrameworkCore > /dev/null
 dotnet add server/Api package Microsoft.AspNetCore.Identity.EntityFrameworkCore > /dev/null
 
-echo "Create Tests project using xUnit"
+# Create Tests project using xUnit
 # Make sure xUnit.net project template is installed
 dotnet new install xunit.v3.templates > /dev/null
 # Create Tests project
@@ -60,13 +59,12 @@ dotnet new xunit3 -f net9.0 -o server/Tests > /dev/null
 # Add it to solution
 dotnet sln *.sln add server/Tests > /dev/null
 
-echo "Add project references"
+echo -e "${B}Finalizing server setup...${N}"
 # Wire the projects together
 dotnet add server/Api reference server/DataAccess > /dev/null
 dotnet add server/Tests reference server/Api > /dev/null
 
-echo "Finalizing server setup"
-
+# Override launchsettings with a fixed port
 cat >server/Api/Properties/launchSettings.json <<EOF
 {
   "\$schema": "https://json.schemastore.org/launchsettings.json",
@@ -93,6 +91,7 @@ cat >server/Api/Properties/launchSettings.json <<EOF
 }
 EOF
 
+# Add connection string to config
 cat >server/Api/appsettings.Development.json <<EOF
 {
   "Logging": {
@@ -107,6 +106,7 @@ cat >server/Api/appsettings.Development.json <<EOF
 }
 EOF
 
+# Create a DbContext with Identity
 cat >server/DataAccess/AppDbContext.cs <<EOF
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -118,6 +118,7 @@ public class AppDbContext : IdentityDbContext<IdentityUser>
 }
 EOF
 
+# Override to add EF, Identity and Scalar
 cat >server/Api/Program.cs <<EOF
 using DataAccess;
 using Microsoft.AspNetCore.Identity;
@@ -168,15 +169,17 @@ app.MapControllers();
 app.Run();
 EOF
 
-echo "Done with server"
+echo -e "${G}Done with server${N}"
 
-echo "Creating client"
-echo "Creating React+Vite app"
-echo "Please choose \"no\" for the next couple of prompts"
+echo -e "${B}Creating client (vite, react, react-router, daisyui)...${N}"
+
+echo -e "${W}--> Please choose \"no\" for the questions <--${N}"
 npm create vite@latest client -- --template react-ts
+echo -e "${W}Ignore commands above${N}"
+echo -e "${B}Please wait...${N}"
 
-echo "Configuring react-router"
-npm install react-router --prefix client > /dev/null
+# Install and configure create react-router
+npm install react-router --prefix client &> /dev/null
 cat >client/src/main.tsx <<EOF
 import ReactDOM from "react-dom/client"; import App from "./App";
 import {
@@ -196,8 +199,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 EOF
 
-echo "Configuring Tailwind CSS & daisyUI"
-npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest --prefix client > /dev/null
+# Configure Tailwind CSS & daisyUI
+npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest --prefix client &> /dev/null
 cat >client/vite.config.ts <<EOF
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
@@ -212,7 +215,7 @@ cat >client/src/App.css <<EOF
 @plugin "daisyui";
 EOF
 
-echo "Configuring vite proxy"
+# Configure vite proxy
 cat >client/vite.config.ts <<EOF
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -232,7 +235,9 @@ export default defineConfig({
 });
 EOF
 
-echo "Creating Docker files"
+echo -e "${G}Done with client${N}"
+
+echo -e "${B}Creating Docker files...${N}"
 
 cat >docker-compose.yml <<EOF
 services:
@@ -275,8 +280,8 @@ EOF
 cp client/.gitignore client/.dockerignore
 
 cat >client/nginx.conf.template <<EOF
-map $http_connection $connection_upgrade {
-  "~*Upgrade" $http_connection;
+map \$http_connection \$connection_upgrade {
+  "~*Upgrade" \$http_connection;
   default keep-alive;
 }
 
@@ -287,18 +292,18 @@ server {
   index index.html index.htm;
 
   location /api {
-      proxy_pass         $BACKEND_URL;
+      proxy_pass         \$BACKEND_URL;
       proxy_http_version 1.1;
-      proxy_set_header   Upgrade $http_upgrade;
-      proxy_set_header   Connection $connection_upgrade;
-      proxy_set_header   Host $host;
-      proxy_cache_bypass $http_upgrade;
-      proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_set_header   Upgrade \$http_upgrade;
+      proxy_set_header   Connection \$connection_upgrade;
+      proxy_set_header   Host \$host;
+      proxy_cache_bypass \$http_upgrade;
+      proxy_set_header   X-Forwarded-For \$proxy_add_x_forwarded_for;
+      proxy_set_header   X-Forwarded-Proto \$scheme;
       proxy_ssl_server_name on;
   }
   location / {
-      try_files $uri $uri/ /index.html index.html;
+      try_files \$uri \$uri/ /index.html index.html;
   }
 }
 EOF
@@ -325,13 +330,13 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # 8. Expose port 80
 EXPOSE 80
 # 9. Start nginx
-CMD envsubst '$BACKEND_URL' < /nginx.conf.template > /etc/nginx/conf.d/default.conf \
+CMD envsubst '\$BACKEND_URL' < /nginx.conf.template > /etc/nginx/conf.d/default.conf \
   && nginx -g 'daemon off;'
 EOF
 
-exit 0
+echo -e "${G}Done with Docker${N}"
 
-echo "Creating README.md"
+echo -e "Creating README.md"
 cat >README.md <<EOF
 # $NAME
 
@@ -339,30 +344,31 @@ cat >README.md <<EOF
 
 **Start database**
 
-```sh
+\`\`\`sh
 docker compose up
-```
+\`\`\`
 
 **Start server**
 
-```sh
+\`\`\`sh
 dotnet run --project server/Api
-```
+\`\`\`
 
 **Start client**
 
-```sh
+\`\`\`sh
 npm run dev --prefix client
-```
+\`\`\`
 
 **Generate API client**
 
 Make sure your backend is running.
-Then do:
+Then run:
 
-```sh
-npx swagger-typescript-api generate -p http://localhost:5000/openapi/v1.json -o ./ -n generated-client.ts
-```
+\`\`\`sh
+npx swagger-typescript-api generate -p http://localhost:5000/openapi/v1.json -o ./client -n src/generated-client.ts
+\`\`\`
 EOF
 
-echo "Success!"
+echo -e "${G}Success!${N}"
+echo -e "Open ${LINK}$PWD/$NAME\a$PWD/$NAME${LINK}\a in your editor and see REAME.md"
