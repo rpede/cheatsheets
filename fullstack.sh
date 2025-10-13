@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 if [ $# -eq 0 ]; then
   echo "No arguments provided."
   echo "Usage: $1 <name>"
@@ -7,10 +6,22 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
+DOTNET_VERSION=$(dotnet --version)
+if [ $? -ne 0 ] || [[ $DOTNET_VERSION != 9.* ]]; then
+  echo ".NET SDK 9 is required"
+fi
+NODE_VERSION=$(node --version)
+if [ $? -ne 0 ] || [[ $NODE_VERSION != v22.* ]]; then
+  echo "Node.js version 22 is required"
+fi
+
+set -e
+
 NAME=$1
 B='\e[34m'
 G='\e[32m'
 W='\e[33;5m'
+E='\e[31;5m'
 N='\e[0m'
 LINK='\e]8;;'
 
@@ -21,48 +32,48 @@ cd $NAME
 
 echo -e "${B}Initialize git repository${N}"
 # Turn the folder into a local GIT repository
-git init > /dev/null
+git init >/dev/null
 # Create a .gitignore file, telling git to ignore certain files
-dotnet new gitignore > /dev/null
+dotnet new gitignore >/dev/null
 
 echo -e "${B}Creating server (EF, Identity, xUnit, Scalar)...${N}"
 # Create a solution file
-dotnet new sln > /dev/null
+dotnet new sln >/dev/null
 
 # Creating Api project
 # Create a ASP.NET Web API project
-dotnet new webapi -controllers -o server/Api > /dev/null
+dotnet new webapi -controllers -o server/Api >/dev/null
 # Add it to solution
-dotnet sln add server/Api > /dev/null
-dotnet add server/Api package Scalar.AspNetCore > /dev/null
+dotnet sln add server/Api >/dev/null
+dotnet add server/Api package Scalar.AspNetCore >/dev/null
 
 # Creating DataAccess project using Entity Framework
 # Create DataAccess project
-dotnet new classlib -o server/DataAccess > /dev/null
+dotnet new classlib -o server/DataAccess >/dev/null
 # Add it to solution
-dotnet sln *.sln add server/DataAccess > /dev/null
+dotnet sln *.sln add server/DataAccess >/dev/null
 # Make sure you have Entity Framework CLI
-dotnet tool install --global dotnet-ef > /dev/null
+dotnet tool install --global dotnet-ef >/dev/null
 # Entity Framework dependency
-dotnet add server/DataAccess package Microsoft.EntityFrameworkCore.Design > /dev/null
+dotnet add server/DataAccess package Microsoft.EntityFrameworkCore.Design >/dev/null
 # PostgreSQL support
-dotnet add server/DataAccess package Npgsql.EntityFrameworkCore.PostgreSQL > /dev/null
+dotnet add server/DataAccess package Npgsql.EntityFrameworkCore.PostgreSQL >/dev/null
 # Add identity
-dotnet add server/DataAccess package Microsoft.AspNetCore.Identity.EntityFrameworkCore > /dev/null
-dotnet add server/Api package Microsoft.AspNetCore.Identity.EntityFrameworkCore > /dev/null
+dotnet add server/DataAccess package Microsoft.AspNetCore.Identity.EntityFrameworkCore >/dev/null
+dotnet add server/Api package Microsoft.AspNetCore.Identity.EntityFrameworkCore >/dev/null
 
 # Create Tests project using xUnit
 # Make sure xUnit.net project template is installed
-dotnet new install xunit.v3.templates > /dev/null
+dotnet new install xunit.v3.templates >/dev/null
 # Create Tests project
-dotnet new xunit3 -f net9.0 -o server/Tests > /dev/null
+dotnet new xunit3 -f net9.0 -o server/Tests >/dev/null
 # Add it to solution
-dotnet sln *.sln add server/Tests > /dev/null
+dotnet sln *.sln add server/Tests >/dev/null
 
 echo -e "${B}Finalizing server setup...${N}"
 # Wire the projects together
-dotnet add server/Api reference server/DataAccess > /dev/null
-dotnet add server/Tests reference server/Api > /dev/null
+dotnet add server/Api reference server/DataAccess >/dev/null
+dotnet add server/Tests reference server/Api >/dev/null
 
 # Override launchsettings with a fixed port
 cat >server/Api/Properties/launchSettings.json <<EOF
@@ -179,7 +190,7 @@ echo -e "${W}Ignore commands above${N}"
 echo -e "${B}Please wait...${N}"
 
 # Install and configure create react-router
-npm install react-router --prefix client &> /dev/null
+npm install react-router --prefix client &>/dev/null
 cat >client/src/main.tsx <<EOF
 import ReactDOM from "react-dom/client"; import App from "./App";
 import {
@@ -200,7 +211,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 EOF
 
 # Configure Tailwind CSS & daisyUI
-npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest --prefix client &> /dev/null
+npm install tailwindcss@latest @tailwindcss/vite@latest daisyui@latest --prefix client &>/dev/null
 cat >client/vite.config.ts <<EOF
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
