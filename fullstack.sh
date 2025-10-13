@@ -163,6 +163,9 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated();
 }
 
+app.UsePathBase(new PathString("/api"));
+app.MapIdentityApi<IdentityUser>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -174,7 +177,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
 
 app.Run();
@@ -238,6 +240,10 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+      },
+      "/openapi": {
         target: "http://localhost:5000",
         changeOrigin: true,
       },
@@ -374,10 +380,16 @@ npm run dev --prefix client
 **Generate API client**
 
 Make sure your backend is running.
-Then run:
+Then from repository root, run:
 
 \`\`\`sh
 npx swagger-typescript-api generate -p http://localhost:5000/openapi/v1.json -o ./client -n src/generated-client.ts
+\`\`\`
+
+Instantiate it like this in your React components:
+
+\`\`\`ts
+new Api({ baseUrl: 'api' })
 \`\`\`
 EOF
 
