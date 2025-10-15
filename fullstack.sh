@@ -389,7 +389,7 @@ npx swagger-typescript-api generate -p http://localhost:5000/openapi/v1.json -o 
 Instantiate it like this in your React components:
 
 \`\`\`ts
-new Api({ baseUrl: 'api' })
+new Api({ baseUrl: '/api' })
 \`\`\`
 EOF
 
