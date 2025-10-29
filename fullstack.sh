@@ -398,4 +398,4 @@ git add -A
 git commit -m "Project skeleton created from script" >/dev/null
 
 echo -e "${G}Success!${N}"
-echo -e "Open ${LINK}$PWD\a$PWD${LINK}\a in your editor and see REAME.md"
+echo -e "Open ${LINK}$PWD\a$PWD${LINK}\a in your editor and see README.md"
