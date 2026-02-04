@@ -9,6 +9,47 @@
   - [Manage services](#manage-services)
 <!--toc:end-->
 
+## Inspecting hardware
+
+Ever wondered what hardware is in your Linux machine?
+Here are some commands you can use.
+Which commands you have available depends on the flavor of Linux.
+
+```sh
+# Show CPU information
+lscpu
+
+# Alternative way of viewing CPU information
+cat /proc/cpuinfo
+
+# Show disk and partitions
+lsblk
+
+# Memory info
+lsmem
+
+# Alternative, that shows memory usage
+free -h
+
+# List devices on the PCI bus
+lspci
+
+# List USB devices
+lsusb
+
+# Show kernel modules (drivers)
+lsmod
+
+# List a lot of hardware information with a single command
+lshw
+
+# List even more hardware info
+sudo lshw
+
+```
+
+Hardware can also be explored through the /sys filesystem.
+
 ## Files and folders
 
 The file system key in Linux.
