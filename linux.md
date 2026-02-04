@@ -34,8 +34,14 @@ free -h
 # List devices on the PCI bus
 lspci
 
+# Show more information about PCI devices
+lspci -v
+
 # List USB devices
 lsusb
+
+# Show more information about PCI devices
+lsusb -v
 
 # Show kernel modules (drivers)
 lsmod
