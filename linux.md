@@ -231,6 +231,34 @@ If you don't want to be prompted, then you can answer yes to all questions with
 `apt -y install` instead.
 Not recommended unless you really know what you are doing.
 
+## Manage software on Arch Linux
+
+```sh
+# List software you have installed (warning long list)
+pacman -Q
+
+# Synchronize local package database
+sudo pacman -Sy
+
+# Then you can list updates
+pacman -Qu
+
+# Or just install updates in one command
+sudo pacman -Syu
+
+# Search for a package (here we are searching for "node")
+sudo pacman -Ss node
+
+# Install a package (here the package "nodejs")
+sudo pacman -S nodejs
+
+# Remove a package (here "nodejs")
+sudo pacman -R nodejs
+
+# Remove a package with its dependencies ("nodejs")
+sudo pacman -Rs nodejs
+```
+
 ## Manage services
 
 Services on modern Linux is managed by systemd.
