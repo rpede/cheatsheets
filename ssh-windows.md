@@ -1,10 +1,19 @@
 # SSH on Windows
 
-## Enable the built-in OpenSSH Client (Windows 10/11)
+These instructions should work for Windows 10/11.
+Let me know if you have any trouble.
+
+## Install Windows Terminal
+
+Go to <https://aka.ms/terminal>.
+Then either download directly or install through Microsoft Store.
+
+After install, press CTRL+R and type "wt" to open it.
+
+## Enable the built-in OpenSSH Client
 
 - Open Settings
-  - Windows 11: Settings → Apps → Optional features
-  - Windows 10: Settings → Apps → Optional features
+  - Settings → Apps → Optional features
 - Check if OpenSSH Client is installed
   - Look for OpenSSH Client in the installed features list.
 - Install it if missing
@@ -12,7 +21,7 @@
   - Search for OpenSSH Client
   - Check it and click Install
 - Verify it works
-  - Open Windows Terminal, PowerShell, or Command Prompt
+  - Open Windows Terminal
   - Run: `ssh -V`
   - You should see an OpenSSH version string.
 
