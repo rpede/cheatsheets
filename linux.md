@@ -40,7 +40,7 @@ lspci -v
 # List USB devices
 lsusb
 
-# Show more information about PCI devices
+# Show more information about USB devices
 lsusb -v
 
 # Show kernel modules (drivers)
@@ -56,7 +56,7 @@ sudo lshw
 
 Hardware can also be explored through the /sys filesystem.
 
-## Files and folders
+## Files and directories
 
 The file system key in Linux.
 
@@ -64,11 +64,14 @@ The file system key in Linux.
 # Change directory
 cd Documents
 
-# Navigate to parent folder
+# Navigate to parent directory
 cd .
 
-# Go to home (your users) folder
+# Go to home (your users) directory
 cd ~
+
+# Go back to the previous directory
+cd -
 
 # Print current working directory
 pwd
@@ -115,7 +118,7 @@ rm -r Documents
 # To execute a file or script
 /path/to/file
 
-# To execute a file or script in your current folder
+# To execute a file or script in your current directory
 ./file
 
 # Scripts often end with .sh
@@ -146,10 +149,10 @@ else
   echo "Guess you are using $SHELL"
 fi
 
-# For each loop
+# For-each loop
 for i in 1 2 3; do echo $i; done
 
-# For each in range
+# For-each in range
 for i in {1..10}; do echo $i; done
 
 # While loop
@@ -168,11 +171,12 @@ done
 ps
 
 # List all processes for all users
-ps aux
+ps -ef
 
 # Show addresses of network adapters (MAC + IP)
 ip addr show
-# Same on older systems
+
+# Same for old systems
 ifconfig
 
 # Display free disk (storage) space
@@ -215,17 +219,17 @@ sudo apt update
 # Upgrade installed packages
 sudo apt upgrade
 
-# Search for a package (here we are searching for "node")
-sudo apt search node
+# Search for a package (here we are searching for "mc")
+sudo apt search mc
 
-# Install a package (here the package "nodejs")
-sudo apt install nodejs
+# Install a package (here the package "mv")
+sudo apt install mc
 
-# Remove a package (here "nodejs")
-sudo apt remove nodejs
+# Remove a package (here "mc")
+sudo apt remove mc
 
-# Remove a package with its dependencies ("nodejs")
-sudo apt autoremove nodejs
+# Remove a package with its dependencies ("mc")
+sudo apt autoremove mc
 ```
 
 Changing installed software requires super-user (aka root) privileges.
@@ -285,6 +289,7 @@ systemctl status ssh
 systemctl start ssh
 
 # Stop a service
+# WARNING: do not stop ssh if you are using it to access the machine
 systemctl stop ssh
 
 # Restart a service
